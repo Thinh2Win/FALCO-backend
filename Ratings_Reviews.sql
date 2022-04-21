@@ -1,5 +1,5 @@
 CREATE TABLE review (
-  id INT NOT NULL PRIMARY KEY,
+  review_id SERIAL PRIMARY KEY,
   product_id INTEGER NOT NULL,
   rating INT,
   date BIGINT,
@@ -20,14 +20,14 @@ CREATE TABLE reviewPhotos (
 )
 
 CREATE TABLE characteristics (
-  id INT NOT NULL PRIMARY KEY,
+  characteristics_id INT NOT NULL PRIMARY KEY,
   product_id INTEGER NOT NULL,
   name varchar(50)
 )
 
 CREATE TABLE characteristicReviews (
   id INT NOT NULL PRIMARY KEY,
-  characteristc_id INT NOT NULL,
+  characteristics_id INT NOT NULL,
   review_id INT NOT NULL,
   value INT NOT NULL
 )

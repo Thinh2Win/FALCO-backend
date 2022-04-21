@@ -35,19 +35,52 @@ const reviewQuery = `CREATE TABLE IF NOT EXISTS review (
   helpfulness INT
 );`;
 
-pool.query(`COPY review (id, product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness) FROM '/Users/Thinh2Win/Data/reviews.csv' DELIMITER ',' CSV HEADER;`)
+const photosQuery = `CREATE TABLE IF NOT EXISTS reviewPhotos (
+  id INT NOT NULL PRIMARY KEY,
+  review_id INTEGER NOT NULL,
+  url varchar(200)
+);`;
+
+const characteristicsQuery = `CREATE TABLE IF NOT EXISTS characteristics (
+  id INT NOT NULL PRIMARY KEY,
+  product_id INTEGER NOT NULL,
+  name varchar(50)
+);`;
+
+const charReviewsQuery = `CREATE TABLE IF NOT EXISTS characteristicReviews (
+  id INT NOT NULL PRIMARY KEY,
+  characteristic_id INT NOT NULL,
+  review_id INT NOT NULL,
+  value INT NOT NULL
+);`;
+
+pool.query(reviewQuery)
   .then((res) => {
-    console.log('Table is seeded');
-    pool.end();
+    console.log('Review table is created');
   })
   .catch((err) => {
     console.log(err);
   });
 
-pool.query(reviewQuery)
+pool.query(photosQuery)
   .then((res) => {
-    console.log('Table is created');
-    pool.end();
+    console.log('Photo table is created');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+pool.query(characteristicsQuery)
+  .then((res) => {
+    console.log('Characteristics table is created');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+pool.query(charReviewsQuery)
+  .then((res) => {
+    console.log('Characteristic reviews table is created');
   })
   .catch((err) => {
     console.log(err);
