@@ -1,0 +1,10 @@
+*.pem
+.env
+
+node_modules/
+
+dist/
+
+*.map
+
+package-lock.json
