@@ -50,36 +50,36 @@ const charReviewsQuery = `CREATE TABLE IF NOT EXISTS characteristicReviews (
   FOREIGN KEY (characteristic_id) REFERENCES characteristics
 );`;
 
-pool.query(reviewQuery)
-  .then((res) => {
-    console.log('Review table is created');
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// pool.query(reviewQuery)
+//   .then((res) => {
+//     console.log('Review table is created');
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
-pool.query(photosQuery)
-  .then((res) => {
-    console.log('Photo table is created');
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// pool.query(photosQuery)
+//   .then((res) => {
+//     console.log('Photo table is created');
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
-pool.query(characteristicsQuery)
-  .then((res) => {
-    console.log('Characteristics table is created');
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// pool.query(characteristicsQuery)
+//   .then((res) => {
+//     console.log('Characteristics table is created');
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
-pool.query(charReviewsQuery)
-  .then((res) => {
-    console.log('Characteristic reviews table is created');
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// pool.query(charReviewsQuery)
+//   .then((res) => {
+//     console.log('Characteristic reviews table is created');
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 module.exports = pool;
