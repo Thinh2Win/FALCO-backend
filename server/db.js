@@ -1,13 +1,6 @@
 const { Pool, Client } = require('pg');
 require('dotenv').config();
 
-// const client = new Client({
-//   user: process.env.DB_USER,
-//   host: process.env.DB_HOST,
-//   database: process.env.DB_NAME,
-//   password: '',
-//   port: process.env.DB_PORT,
-// });
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -21,7 +14,7 @@ pool.on('error', (err) => {
 pool.connect();
 
 const reviewQuery = `CREATE TABLE IF NOT EXISTS review (
-  id INT NOT NULL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   product_id INTEGER NOT NULL,
   rating INT,
   date BIGINT,
@@ -36,22 +29,25 @@ const reviewQuery = `CREATE TABLE IF NOT EXISTS review (
 );`;
 
 const photosQuery = `CREATE TABLE IF NOT EXISTS reviewPhotos (
-  id INT NOT NULL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   review_id INTEGER NOT NULL,
-  url varchar(200)
+  url varchar(200),
+  FOREIGN KEY (review_id) REFERENCES review
 );`;
 
 const characteristicsQuery = `CREATE TABLE IF NOT EXISTS characteristics (
-  id INT NOT NULL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   product_id INTEGER NOT NULL,
   name varchar(50)
 );`;
 
 const charReviewsQuery = `CREATE TABLE IF NOT EXISTS characteristicReviews (
-  id INT NOT NULL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   characteristic_id INT NOT NULL,
   review_id INT NOT NULL,
-  value INT NOT NULL
+  value INT NOT NULL,
+  FOREIGN KEY (review_id) REFERENCES review,
+  FOREIGN KEY (characteristic_id) REFERENCES characteristics
 );`;
 
 pool.query(reviewQuery)
