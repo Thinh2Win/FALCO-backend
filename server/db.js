@@ -17,28 +17,28 @@ const reviewQuery = `CREATE TABLE IF NOT EXISTS review (
   id SERIAL PRIMARY KEY,
   product_id INTEGER NOT NULL,
   rating INT,
-  date BIGINT,
-  summary varchar(500),
-  body varchar(500),
+  date TEXT,
+  summary TEXT,
+  body TEXT,
   recommend BOOLEAN,
   reported BOOLEAN,
-  reviewer_name varchar(50),
-  reviewer_email varchar(50),
-  response varchar(500),
+  reviewer_name TEXT,
+  reviewer_email TEXT,
+  response TEXT,
   helpfulness INT
 );`;
 
 const photosQuery = `CREATE TABLE IF NOT EXISTS reviewPhotos (
   id SERIAL PRIMARY KEY,
   review_id INTEGER NOT NULL,
-  url varchar(200),
+  url TEXT,
   FOREIGN KEY (review_id) REFERENCES review
 );`;
 
 const characteristicsQuery = `CREATE TABLE IF NOT EXISTS characteristics (
   id SERIAL PRIMARY KEY,
   product_id INTEGER NOT NULL,
-  name varchar(50)
+  name TEXT
 );`;
 
 const charReviewsQuery = `CREATE TABLE IF NOT EXISTS characteristicReviews (
@@ -53,30 +53,18 @@ const charReviewsQuery = `CREATE TABLE IF NOT EXISTS characteristicReviews (
 // pool.query(reviewQuery)
 //   .then((res) => {
 //     console.log('Review table is created');
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-// pool.query(photosQuery)
-//   .then((res) => {
-//     console.log('Photo table is created');
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-// pool.query(characteristicsQuery)
-//   .then((res) => {
-//     console.log('Characteristics table is created');
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-// pool.query(charReviewsQuery)
-//   .then((res) => {
-//     console.log('Characteristic reviews table is created');
+//     pool.query(characteristicsQuery)
+//       .then((res) => {
+//         console.log('Characteristics table is created');
+//         pool.query(photosQuery)
+//           .then((res) => {
+//             console.log('Photo table is created');
+//             pool.query(charReviewsQuery)
+//               .then((res) => {
+//                 console.log('Characteristic reviews table is created');
+//               });
+//           });
+//       });
 //   })
 //   .catch((err) => {
 //     console.log(err);

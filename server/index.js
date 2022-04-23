@@ -22,27 +22,13 @@ app.get('/reviews', (req, res) => {
     count,
     results: [],
   };
-  pool.query(`SELECT * FROM review WHERE product_id = '${product_id}';`)
+  pool.query(`SELECT r.*, JSON_agg(reviewphotos) AS photos
+  FROM review r LEFT OUTER JOIN reviewphotos on r.review_id = reviewphotos.review_id WHERE product_id = '${product_id}'
+  GROUP by r.review_id
+  LIMIT ${count};`)
     .then((data) => {
-      const arr = data.rows.slice(0, count).map((review) => {
-        review.date = new Date(review.date);
-        return pool.query(`SELECT * FROM reviewphotos WHERE review_id = ${review.review_id};`)
-          .then((photos) => {
-            review['photos'] = photos.rows;
-            return review;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-      Promise.all(arr)
-        .then((review) => {
-          dataObj.results = review;
-          res.send(dataObj);
-        });
-    })
-    .catch((err) => {
-      res.status(400).send(err);
+      dataObj.results = data.rows;
+      res.send(dataObj);
     });
 });
 
