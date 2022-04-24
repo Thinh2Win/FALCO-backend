@@ -72,7 +72,7 @@ app.get('/reviews/meta', (req, res) => {
             json_build_object(
               'id', characteristics.id,
               'name', characteristics.name,
-              'value', (SELECT AVG (value) FROM characteristicreviews WHERE characteristic_id = characteristics.id)
+              'value', ((SELECT AVG (value) FROM characteristicreviews WHERE characteristic_id = characteristics.id)::numeric(10,4))
             )
           ) FROM characteristics WHERE product_id = ${product_id})
       )
