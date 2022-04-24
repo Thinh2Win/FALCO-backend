@@ -41,7 +41,7 @@ const pool = require('./db.js');
 // pool.query(`COPY characteristicReviews FROM '/Users/Thinh2Win/Data/characteristic_reviews.csv' DELIMITER ',' CSV HEADER;`)
 //   .then(() => {
 //     console.log('Characteristic reviews table is seeded');
-//     pool.query(`CREATE INDEX review_id_charecteristic_id_index ON characteristicreviews (review_id, characteristic_id);`)
+//     pool.query(`CREATE INDEX review_id_charecteristic_id_index ON characteristicreviews (characteristic_id, review_id);`)
 //       .then(() => {
 //         console.log('review_id and characteristic_id indexed for review table');
 //       });

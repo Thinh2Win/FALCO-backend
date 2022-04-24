@@ -14,7 +14,7 @@ pool.on('error', (err) => {
 pool.connect();
 
 const reviewQuery = `CREATE TABLE IF NOT EXISTS review (
-  id SERIAL PRIMARY KEY,
+  review_id SERIAL PRIMARY KEY,
   product_id INTEGER NOT NULL,
   rating INT,
   date TEXT,

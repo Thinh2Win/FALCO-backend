@@ -22,13 +22,76 @@ app.get('/reviews', (req, res) => {
     count,
     results: [],
   };
-  pool.query(`SELECT r.*, JSON_agg(reviewphotos) AS photos
-  FROM review r LEFT OUTER JOIN reviewphotos on r.review_id = reviewphotos.review_id WHERE product_id = '${product_id}'
-  GROUP by r.review_id
-  LIMIT ${count};`)
+  pool.query(`
+    SELECT r.*,
+    COALESCE(
+      json_agg(
+        json_build_object(
+          'id', reviewphotos.id,
+          'url', reviewphotos.url
+        )
+      )
+      FILTER (WHERE reviewphotos.id IS NOT NULL), '[]') AS photos
+    FROM review r
+    LEFT OUTER JOIN reviewphotos on r.review_id = reviewphotos.review_id
+    WHERE product_id = '${product_id}'
+    GROUP by r.review_id
+    LIMIT ${count};
+    `)
     .then((data) => {
       dataObj.results = data.rows;
       res.send(dataObj);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get('/reviews/meta', (req, res) => {
+  const { product_id } = req.query;
+  pool.query(`
+    SELECT json_build_object (
+      'product_id', ${product_id},
+      'ratings', (
+        json_build_object(
+          '1', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 1) AS count ),
+          '2', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 2) AS count ),
+          '3', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 3) AS count ),
+          '4', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 4) AS count ),
+          '5', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 5) AS count )
+        )
+      ),
+      'recommended', (
+        json_build_object(
+          0, (SELECT COUNT(recommend) FROM (SELECT recommend FROM review WHERE product_id = ${product_id} AND recommend = false) AS count ),
+          1, (SELECT COUNT(recommend) FROM (SELECT recommend FROM review WHERE product_id = ${product_id} AND recommend = true) AS count )
+        )
+      ),
+      'characteristics', (
+          (SELECT json_agg(
+            json_build_object(
+              'id', characteristics.id,
+              'name', characteristics.name,
+              'value', (SELECT AVG (value) FROM characteristicreviews WHERE characteristic_id = characteristics.id)
+            )
+          ) FROM characteristics WHERE product_id = ${product_id})
+      )
+    ) AS result
+  ;`)
+    .then((data) => {
+      const query = data.rows[0].result;
+      const container = {};
+      query.characteristics.forEach(characteristic => {
+        container[characteristic.name] = {
+          id: characteristic.id,
+          value: characteristic.value,
+        };
+      });
+      query.characteristics = container;
+      res.send(query);
+    })
+    .catch((err) => {
+      console.log(err);
     });
 });
 
