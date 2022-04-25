@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable camelcase */
 /* eslint-disable no-console */
 require('dotenv').config();
@@ -16,6 +17,8 @@ app.get('/reviews', (req, res) => {
   const { product_id, sort } = req.query;
   const page = req.query.page || 1;
   const count = req.query.count || 5;
+  let offset = 0;
+  page > 1 ? offset = (page - 1) * count : offset = 0;
   const dataObj = {
     product: product_id,
     page,
@@ -36,6 +39,7 @@ app.get('/reviews', (req, res) => {
     LEFT OUTER JOIN reviewphotos on r.review_id = reviewphotos.review_id
     WHERE product_id = '${product_id}'
     GROUP by r.review_id
+    OFFSET ${offset}
     LIMIT ${count};
     `)
     .then((data) => {
@@ -46,26 +50,36 @@ app.get('/reviews', (req, res) => {
       console.log(err);
     });
 });
-
+pool.query(`SELECT rating, COUNT(*) FROM review where product_id = 2 GROUP BY rating ORDER BY rating`)
 app.get('/reviews/meta', (req, res) => {
   const { product_id } = req.query;
   pool.query(`
     SELECT json_build_object (
       'product_id', ${product_id},
       'ratings', (
-        json_build_object(
-          '1', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 1) AS count ),
-          '2', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 2) AS count ),
-          '3', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 3) AS count ),
-          '4', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 4) AS count ),
-          '5', (SELECT COUNT(rating) FROM (SELECT rating FROM review WHERE product_id = ${product_id} AND rating = 5) AS count )
-        )
+        SELECT json_object_agg(rating, count)
+        FROM (
+          SELECT rating, COUNT(*)
+          FROM review
+          WHERE product_id = ${product_id}
+          GROUP BY rating
+          ORDER BY rating
+          ) AS ratings
       ),
       'recommended', (
-        json_build_object(
-          0, (SELECT COUNT(recommend) FROM (SELECT recommend FROM review WHERE product_id = ${product_id} AND recommend = false) AS count ),
-          1, (SELECT COUNT(recommend) FROM (SELECT recommend FROM review WHERE product_id = ${product_id} AND recommend = true) AS count )
-        )
+        SELECT json_object_agg(
+          CAST(
+            CASE WHEN recommend = 'true' THEN 1
+            ELSE 0
+            END as bit
+          ), count)
+        FROM (
+          SELECT recommend, COUNT(*)
+          FROM review
+          WHERE product_id = ${product_id}
+          GROUP BY recommend
+          ORDER BY recommend
+        ) AS recommend
       ),
       'characteristics', (
           (SELECT json_agg(
