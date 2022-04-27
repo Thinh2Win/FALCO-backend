@@ -8,3 +8,5 @@ dist/
 *.map
 
 package-lock.json
+SDC1.pem
+.DS_Store
