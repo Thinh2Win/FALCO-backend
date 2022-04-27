@@ -3,11 +3,7 @@
 /* eslint-disable no-console */
 require('dotenv').config();
 const express = require('express');
-const axios = require('axios');
 const pool = require('./db.js');
-// Server URL
-const URL = 'http://127.0.0.1';
-const REVIEWS_URL = `${URL}:${process.env.REVIEWS_PORT}`;
 
 const app = express();
 app.use(express.json());
@@ -18,6 +14,21 @@ app.get('/reviews', (req, res) => {
   const page = req.query.page || 1;
   const count = req.query.count || 5;
   let offset = 0;
+  let order = '';
+  switch (sort) {
+    case 'newest':
+      order = 'date';
+      break;
+    case 'helpful':
+      order = 'helpfulness';
+      break;
+    case 'relevant':
+      order = 'helpfulness';
+      break;
+    default:
+      order = 'product_id';
+  }
+
   page > 1 ? offset = (page - 1) * count : offset = 0;
   const dataObj = {
     product: product_id,
@@ -39,6 +50,7 @@ app.get('/reviews', (req, res) => {
     LEFT OUTER JOIN reviewphotos on r.review_id = reviewphotos.review_id
     WHERE product_id = '${product_id}'
     GROUP by r.review_id
+    ORDER BY ${order} DESC
     OFFSET ${offset}
     LIMIT ${count};
     `)
@@ -50,7 +62,7 @@ app.get('/reviews', (req, res) => {
       console.log(err);
     });
 });
-pool.query(`SELECT rating, COUNT(*) FROM review where product_id = 2 GROUP BY rating ORDER BY rating`)
+
 app.get('/reviews/meta', (req, res) => {
   const { product_id } = req.query;
   pool.query(`
@@ -109,22 +121,44 @@ app.get('/reviews/meta', (req, res) => {
     });
 });
 
-// app.use('/reviews', (req, res) => {
-//   const url = REVIEWS_URL + req.originalUrl;
-//   console.log('[Router]: Routing to:', url);
-//   axios(url, {
-//     method: req.method,
-//     data: req.body,
-//   })
-//     .then((apiRes) => {
-//       console.log('[Router]: Sending data from Reviews API:', apiRes.data);
-//       // res.send(apiRes.data);
-//       res.send('hello');
+// app.post('/reviews', (req, res) => {
+//   const q = req.query;
+//   pool.query(`INSERT INTO review VALUES (${q.product_id}, '${q.rating}', '${q.date}', '${q.summary}', '${q.body}', '${q.recommend}', 'false', '${q.name}', '${q.email}', 'null', '0');`)
+//     .then(() => {
+//       res.status(201).send('posted');
 //     })
 //     .catch((err) => {
-//       console.log(err);
+//       res.status(400).send(err);
 //     });
 // });
+
+app.put('/reviews/helpful', (req, res) => {
+  pool.query(`
+  UPDATE review
+  SET helpfulness = helpfulness + 1
+  WHERE review_id = ${req.query.review_id}
+  ;`)
+    .then(() => {
+      res.send('Review Marked Helpful');
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
+app.put('/reviews/report', (req, res) => {
+  pool.query(`
+  UPDATE review
+  SET reported = true
+  WHERE review_id = ${req.query.review_id}
+  ;`)
+    .then(() => {
+      res.send('Review Reported');
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
 
 app.use('/', (req, res) => {
   console.log('[REVIEWS]: Incoming request from routing server:', req.url);
