@@ -2,7 +2,7 @@ const pool = require('./db.js');
 
 // run 1st 2 seed queries first than 3 than 4
 
-// pool.query(`COPY review FROM '/Users/Thinh2Win/Data/reviews.csv' DELIMITER ',' CSV HEADER;`)
+// pool.query(`COPY review FROM 'reviews.csv' DELIMITER ',' CSV HEADER;`)
 //   .then(() => {
 //     console.log('Reviews table is seeded');
 //     pool.query(`CREATE INDEX product_id_index ON review (product_id);`)
@@ -14,7 +14,7 @@ const pool = require('./db.js');
 //     console.log(err);
 //   });
 
-// pool.query(`COPY characteristics FROM '/Users/Thinh2Win/Data/characteristics.csv' DELIMITER ',' CSV HEADER;`)
+// pool.query(`COPY characteristics FROM 'characteristics.csv' DELIMITER ',' CSV HEADER;`)
 //   .then(() => {
 //     console.log('Characteristics table is seeded');
 //     pool.query(`CREATE INDEX char_product_id_index ON characteristics (product_id);`)
@@ -26,7 +26,7 @@ const pool = require('./db.js');
 //     console.log(err);
 //   });
 
-// pool.query(`COPY reviewPhotos FROM '/Users/Thinh2Win/Data/reviews_photos.csv' DELIMITER ',' CSV HEADER;`)
+// pool.query(`COPY reviewPhotos FROM 'reviews_photos.csv' DELIMITER ',' CSV HEADER;`)
 //   .then(() => {
 //     console.log('Photos table is seeded');
 //     pool.query(`CREATE INDEX review_id_index ON reviewphotos (review_id);`)
@@ -38,7 +38,7 @@ const pool = require('./db.js');
 //     console.log(err);
 //   });
 
-// pool.query(`COPY characteristicReviews FROM '/Users/Thinh2Win/Data/characteristic_reviews.csv' DELIMITER ',' CSV HEADER;`)
+// pool.query(`COPY characteristicReviews FROM 'characteristic_reviews.csv' DELIMITER ',' CSV HEADER;`)
 //   .then(() => {
 //     console.log('Characteristic reviews table is seeded');
 //     pool.query(`CREATE INDEX review_id_charecteristic_id_index ON characteristicreviews (characteristic_id, review_id);`)
