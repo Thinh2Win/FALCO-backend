@@ -1,6 +1,7 @@
 import http from 'k6/http';
 import { sleep } from 'k6';
-
+require('dotenv').config();
+        
 export const options = {
   insecureSkipTLSVerify: true,
   noConnectionReuse: false,
@@ -17,7 +18,7 @@ export const options = {
   ],
 };
 
-const API_BASE_URL = 'http://localhost:1901/reviews';
+const API_BASE_URL = 'process.env.URL';
 
 export default () => {
   http.get(`${API_BASE_URL}?product_id=${Math.floor(Math.random() * 1000011)}`);
