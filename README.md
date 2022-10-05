@@ -1,13 +1,42 @@
 <!-- ABOUT THE PROJECT -->
-## About The Project
 
-This is an API microservice that delivers reviews data for a catalog of products. This API handles get requests for all reviews of a product (paginated and sorted) as well as aggregate review data for a product (ie an overall rating) and also handles posts of new reviews. The database is PostgreSQL and all queries run on an average of 20 ms. The server layer is made with Node.js and Express. It is designed to be easily scalable through multiple AWS EC2 instances. While this project was deployed, it was on 7 EC2 instances. One instance was a reverse-proxy server made with NGINX that distributed traffic across 5 Express servers, in which, queried the Postgres database. This setup was able to handle up to 2,000 requests per second with an average response time of 80 ms and an error rate of less than 1%.
+# Product Reviews API
+A back end service-oriented api scaled to support more than half a thousand requests per second for the product reviews section of an eCommerce website.
 
+## Technologies Used
+- [Node.js](https://nodejs.org/en/) - RESTful API
+- [Express](http://expressjs.com/) - Node.js Web App Framework
+- [PostgreSQL](https://www.postgresql.org/) - Relational Database
+- [NGINX](https://www.nginx.com/) - Load Balancing
+- [k6](https://k6.io/) - Load Testing (Local)
+- [Loader.io](https://loader.io/) - Load Testing (Cloud)
+- [AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 
+## API Endpoints
+| Method        | Endpoint      | Description   | Parameters    |
+| ------------- | ------------- | ------------- | ------------- |
+| GET           | /reviews | Retrieves reviews | product_id, order, count |
+| GET           | /reviews/meta | Retrieves meta data for a review | review_id |
+| POST          | /reviews | Posts a review | product_id, body, name, email |
+| PUT           | /reviews/:review_id/helpful | Mark review as helpful | review_id |
+| PUT           | /reviews/:review_id/report | Report a review | review_id |
 
-### Built With
+## Performance Metrics with k6 (Local)
+Goals:
+- 1000 requests per second
+- <50ms response time
 
-![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![Node](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
-![Express](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+Achieved:
+- 38ms average response time for 1000rps
+
+## Performance Metrics with Loader.io (Cloud)
+Goals:
+- <2000ms response time
+- <1% error rate
+
+Achieved:
+### Endpoint: /qa/questions
+![Screen Shot 2022-05-02 at 10 45 26 AM](https://user-images.githubusercontent.com/77183806/166298523-4cdf9334-7ae6-4c86-b1d3-c1d0cf748213.png)
+
+### Endpoint: /qa/answers
+![Screen Shot 2022-05-02 at 10 45 56 AM](https://user-images.githubusercontent.com/77183806/166298577-67c9bf56-6a10-4844-9a1d-c03129b35b3d.png)
