@@ -35,5 +35,4 @@ Goals:
 - <1% error rate
 
 Achieved:
-### Endpoint: /reviews
-![Screen Shot 2022-05-02 at 10 45 26 AM](https://user-images.githubusercontent.com/77183806/166298523-4cdf9334-7ae6-4c86-b1d3-c1d0cf748213.png)
+- 70ms average response time for 2000rps 
