@@ -4,13 +4,14 @@
 A back end service-oriented api scaled to support more than half a thousand requests per second for the product reviews section of an eCommerce website.
 
 ## Technologies Used
-- [Node.js](https://nodejs.org/en/) - RESTful API
-- [Express](http://expressjs.com/) - Node.js Web App Framework
-- [PostgreSQL](https://www.postgresql.org/) - Relational Database
-- [NGINX](https://www.nginx.com/) - Load Balancing
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 - [k6](https://k6.io/) - Load Testing (Local)
 - [Loader.io](https://loader.io/) - Load Testing (Cloud)
-- ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+
 
 ## API Endpoints
 | Method        | Endpoint      | Description   | Parameters    |
