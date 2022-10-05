@@ -35,8 +35,5 @@ Goals:
 - <1% error rate
 
 Achieved:
-### Endpoint: /qa/questions
+### Endpoint: /reviews
 ![Screen Shot 2022-05-02 at 10 45 26 AM](https://user-images.githubusercontent.com/77183806/166298523-4cdf9334-7ae6-4c86-b1d3-c1d0cf748213.png)
-
-### Endpoint: /qa/answers
-![Screen Shot 2022-05-02 at 10 45 56 AM](https://user-images.githubusercontent.com/77183806/166298577-67c9bf56-6a10-4844-9a1d-c03129b35b3d.png)
