@@ -10,7 +10,7 @@ A back end service-oriented api scaled to support more than half a thousand requ
 - [NGINX](https://www.nginx.com/) - Load Balancing
 - [k6](https://k6.io/) - Load Testing (Local)
 - [Loader.io](https://loader.io/) - Load Testing (Cloud)
-- [AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+- ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 
 ## API Endpoints
 | Method        | Endpoint      | Description   | Parameters    |
