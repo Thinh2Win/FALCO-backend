@@ -1,7 +1,7 @@
 <!-- ABOUT THE PROJECT -->
 
 # Product Reviews API
-A back end service-oriented api scaled to support more than half a thousand requests per second for the product reviews section of an eCommerce website.
+A back end service-oriented api scaled to support up to a thousand requests per second for the product reviews section of an eCommerce website.
 
 ## Technologies Used
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
